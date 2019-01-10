@@ -61,7 +61,7 @@ const RobinhoodWebApi = (token) => {
 
     api.popularity = async (symbol) => {
 
-        try{
+        try {
 
             const result = await api.quote_data(symbol);
             const symbol_uuid = JSON.parse(result).results[0].instrument.split('/')[4];
@@ -70,7 +70,7 @@ const RobinhoodWebApi = (token) => {
             });
 
         } catch (e) {
-           throw (e);
+            throw (e);
         }
     };
 
@@ -105,6 +105,33 @@ const RobinhoodWebApi = (token) => {
         });
     };
 
+    api.orders = (options) => {
+        if (typeof options["updated_at"] !== "undefined") {
+            options['updated_at[gte]'] = options.updated_at;
+            delete options["updated_at"];
+        }
+        return request({
+            headers: header,
+            uri: config.url + config.endpoints.orders,
+            qs: options
+        })
+    };
+
+    api.order = (orderId) => {
+        return request({
+            headers: header,
+            uri: config.url + config.endpoints.orders,
+            qs: {id: orderId},
+        })
+    };
+
+    api.cancel_order = (orderId) => {
+        return request({
+            method : "POST",
+            headers: header,
+            uri : config.url + config.endpoints.cancel_order.replace("{{order_id}}", orderId),
+        })
+    };
 
     return api;
 };
