@@ -2,6 +2,8 @@ const dotenv = require('dotenv').config();
 
 const config = {
     token: process.env.TOKEN,
+    refresh_token: process.env.REFRESH_TOKEN,
+    scope: 'internal',
     url: 'https://api.robinhood.com/',
     endpoints: {
         login:  'oauth2/token/',

@@ -1,11 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const config = require('./../config');
-const Robinhood = require('../rh');
+const robinhood = require('../rh')(config.token);
 
 router.get('/', async (req, res) => {
 
-    res.status(200).send('asasasa');
+
+    const ip = await robinhood.dividends();
+
+    res.status(200).send(ip);
 
 });
 
